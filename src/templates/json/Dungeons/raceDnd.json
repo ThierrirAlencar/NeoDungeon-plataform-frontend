@@ -1,0 +1,74 @@
+[
+    {
+        "id": "anao",
+        "nome": "Anão",
+        "nomeIngles": "Dwarf",
+        "deslocamento": 7.5, 
+        "bonusAtributos": { "CON": 2 },
+        "visaoNoEscuro": true
+    },
+    {
+        "id": "elfo",
+        "nome": "Elfo",
+        "nomeIngles": "Elf",
+        "deslocamento": 9.0,
+        "bonusAtributos": { "DES": 2 },
+        "visaoNoEscuro": true
+    },
+    {
+        "id": "halfling",
+        "nome": "Halfling",
+        "nomeIngles": "Halfling",
+        "deslocamento": 7.5, 
+        "bonusAtributos": { "DES": 2 },
+        "visaoNoEscuro": false
+    },
+    {
+        "id": "humano",
+        "nome": "Humano",
+        "nomeIngles": "Human",
+        "deslocamento": 9.0, 
+        "bonusAtributos": { "FOR": 1, "DES": 1, "CON": 1, "INT": 1, "SAB": 1, "CAR": 1 }, 
+        "visaoNoEscuro": false
+    },
+    {
+        "id": "draconato",
+        "nome": "Draconato",
+        "nomeIngles": "Dragonborn",
+        "deslocamento": 9.0, 
+        "bonusAtributos": { "FOR": 2, "CAR": 1 },
+        "visaoNoEscuro": false
+    },
+    {
+        "id": "gnomo",
+        "nome": "Gnomo",
+        "nomeIngles": "Gnome",
+        "deslocamento": 7.5,
+        "bonusAtributos": { "INT": 2 },
+        "visaoNoEscuro": true
+    },
+    {
+        "id": "meio_elfo",
+        "nome": "Meio-Elfo",
+        "nomeIngles": "Half-Elf",
+        "deslocamento": 9.0, 
+        "bonusAtributos": { "CAR": 2 }, 
+        "visaoNoEscuro": true
+    },
+    {
+        "id": "meio_orc",
+        "nome": "Meio-Orc",
+        "nomeIngles": "Half-Orc",
+        "deslocamento": 9.0,
+        "bonusAtributos": { "FOR": 2, "CON": 1 },
+        "visaoNoEscuro": true
+    },
+    {
+        "id": "tiefling",
+        "nome": "Tiefling",
+        "nomeIngles": "Tiefling",
+        "deslocamento": 9.0, 
+        "bonusAtributos": { "INT": 1, "CAR": 2 },
+        "visaoNoEscuro": true
+    }
+]

@@ -1,0 +1,38 @@
+[
+    {
+        "nome": "Força",
+        "abrev": "FOR",
+        "descricao": "Mede o poder físico, atletismo e força bruta.",
+        "pericias": ["Atletismo"]
+    },
+    {
+        "nome": "Destreza",
+        "abrev": "DES",
+        "descricao": "Mede a agilidade, reflexos, equilíbrio e furtividade.",
+        "pericias": ["Acrobacia", "Furtividade", "Prestidigitaçã"]
+    },
+    {
+        "nome": "Constituição",
+        "abrev": "CON",
+        "descricao": "Mede a saúde, resistência, vigor e energia vital.",
+        "pericias": []
+    },
+    {
+        "nome": "Inteligência",
+        "abrev": "INT",
+        "descricao": "Mede a acuidade mental, precisão na memória e raciocínio.",
+        "pericias": ["Arcanismo", "História", "Investigação", "Natureza", "Religião"]
+    },
+    {
+        "nome": "Sabedoria",
+        "abrev": "SAB",
+        "descricao": "Mede a percepção, intuição, sobrevivência e empatia.",
+        "pericias": ["Adestrar Animais", "Intuição", "Medicina", "Percepção", "Sobrevivência"]
+    },
+    {
+        "nome": "Carisma",
+        "abrev": "CAR",
+        "descricao": "Mede a força de personalidade, persuasão e liderança.",
+        "pericias": ["Atuação", "Enganação", "Intimidação", "Persuasão"]
+    }
+]

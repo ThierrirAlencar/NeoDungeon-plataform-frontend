@@ -1,0 +1,85 @@
+
+[
+    {
+        "id": "ordeiro_e_bom",
+        "nome": "Ordeiro e Bom",
+        "nomeIngles": "Lawful Good",
+        "abrev": "OB",
+        "eixoEtico": "Ordeiro",
+        "eixoMoral": "Bom",
+        "descricao": "Age com compaixão e honra, seguindo regras e a justiça social."
+    },
+    {
+        "id": "neutro_e_bom",
+        "nome": "Neutro e Bom",
+        "nomeIngles": "Neutral Good",
+        "abrev": "NB",
+        "eixoEtico": "Neutro",
+        "eixoMoral": "Bom",
+        "descricao": "Faz o melhor que pode para ajudar os outros, sem se prender ou se opor a leis."
+    },
+    {
+        "id": "caotico_e_bom",
+        "nome": "Caótico e Bom",
+        "nomeIngles": "Chaotic Good",
+        "abrev": "CB",
+        "eixoEtico": "Caótico",
+        "eixoMoral": "Bom",
+        "descricao":
+        "Age de acordo com sua própria consciência, sem se importar com o que os outros esperam."
+    },
+    {
+        "id": "ordeiro_e_neutro",
+        "nome": "Ordeiro e Neutro",
+        "nomeIngles": "Lawful Neutral",
+        "abrev": "ON",
+        "eixoEtico": "Ordeiro",
+        "eixoMoral": "Neutro",
+        "descricao": "Age estritamente de acordo com a lei, tradição ou códigos pessoais."
+    },
+    {
+        "id": "neutro_puro",
+        "nome": "Neutro Puro",
+        "nomeIngles": "True Neutral",
+        "abrev": "N",
+        "eixoEtico": "Neutro",
+        "eixoMoral": "Neutro",
+        "descricao": "Prefere manter o equilíbrio ou simplesmente se afasta de dilemas morais."
+    },
+    {
+        "id": "caotico_e_neutro",
+        "nome": "Caótico e Neutro",
+        "nomeIngles": "Chaotic Neutral",
+        "abrev": "CN",
+        "eixoEtico": "Caótico",
+        "eixoMoral": "Neutro",
+        "descricao": "Segue seus próprios caprichos e valoriza sua liberdade individual acima de tudo."
+    },
+    {
+        "id": "ordeiro_e_mau",
+        "nome": "Ordeiro e Mau",
+        "nomeIngles": "Lawful Evil",
+        "abrev": "OM",
+        "eixoEtico": "Ordeiro",
+        "eixoMoral": "Mau",
+        "descricao": "Pega o que quer dentro dos limites de um código de conduta ou hierarquia."
+    },
+    {
+        "id": "neutro_e_mau",
+        "nome": "Neutro e Mau",
+        "nomeIngles": "Neutral Evil",
+        "abrev": "NM",
+        "eixoEtico": "Neutro",
+        "eixoMoral": "Mau",
+        "descricao": "Faz qualquer coisa para se safar, sem escrúpulos e sem apego à ordem."
+    },
+    {
+        "id": "caotico_e_mau",
+        "nome": "Caótico e Mau",
+        "nomeIngles": "Chaotic Evil",
+        "abrev": "CM",
+        "eixoEtico": "Caótico",
+        "eixoMoral": "Mau",
+        "descricao": "Age com violência arbitrária e imprevisível, motivado por ganância ou fúria."
+    }
+]

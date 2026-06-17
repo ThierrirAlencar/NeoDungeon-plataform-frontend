@@ -1,0 +1,57 @@
+[
+    {
+        "id": "barbaro",
+        "nome": "Bárbaro",
+        "nomeIngles": "Barbarian",
+        "dadoVida": "d12",
+        "atributoPrincipal": "FOR"
+    },
+    { "id": "bardo", "nome": "Bardo", "nomeIngles": "Bard", "dadoVida": "d8", "atributoPrincipal": "CAR" },
+    { "id": "bruxo", "nome": "Bruxo", "nomeIngles": "Warlock", "dadoVida": "d8", "atributoPrincipal": "CAR" },
+    {
+        "id": "clerigo",
+        "nome": "Clérigo",
+        "nomeIngles": "Cleric",
+        "dadoVida": "d8",
+        "atributoPrincipal": "SAB"
+    },
+    { "id": "druida", "nome": "Druida", "nomeIngles": "Druid", "dadoVida": "d8", "atributoPrincipal": "SAB" },
+    {
+        "id": "feiticeiro",
+        "nome": "Feiticeiro",
+        "nomeIngles": "Sorcerer",
+        "dadoVida": "d8",
+        "atributoPrincipal": "CAR"
+    },
+    {
+        "id": "guerreiro",
+        "nome": "Guerreiro",
+        "nomeIngles": "Fighter",
+        "dadoVida": "d10",
+        "atributoPrincipal": "FOR_OU_DES"
+    },
+    { "id": "monge", "nome": "Monge", "nomeIngles": "Monk", "dadoVida": "d8", "atributoPrincipal": "DES_SAB" },
+    {
+        "id": "paladino",
+        "nome": "Paladino",
+        "nomeIngles": "Paladin",
+        "dadoVida": "d10",
+        "atributoPrincipal": "FOR_CAR"
+    },
+    {
+        "id": "patrulheiro",
+        "nome": "Patrulheiro (Ranger)",
+        "nomeIngles": "Ranger",
+        "dadoVida": "d10",
+        "atributoPrincipal": "DES_SAB"
+    },
+    { "id": "ladino", "nome": "Ladino", "nomeIngles": "Rogue", "dadoVida": "d8", "atributoPrincipal": "DES" },
+    { "id": "mago", "nome": "Mago", "nomeIngles": "Wizard", "dadoVida": "d6", "atributoPrincipal": "INT" },
+    {
+        "id": "artifice",
+        "nome": "Artífice",
+        "nomeIngles": "Artificer",
+        "dadoVida": "d8",
+        "atributoPrincipal": "INT"
+    }
+]

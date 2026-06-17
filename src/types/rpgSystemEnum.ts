@@ -1,0 +1,7 @@
+
+
+export enum rpgSystem{
+    PARANORMAL_ORDER,
+    DUNGEONS_AND_DRAGONS,
+    SORCERES_AND_CURSES
+}

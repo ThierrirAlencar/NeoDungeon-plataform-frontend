@@ -1,0 +1,75 @@
+[
+    {
+        "id": "acólito",
+        "nome": "Acólito",
+        "nomeIngles": "Acolyte",
+        "periciasGanhas": ["intuicao", "religiao"]
+    },
+    {
+        "id": "artesao_guilda",
+        "nome": "Artesão da Guilda",
+        "nomeIngles": "Guild Artisan",
+        "periciasGanhas": ["intuicao", "persuasao"]
+    },
+    {
+        "id": "artista",
+        "nome": "Artista",
+        "nomeIngles": "Entertainer",
+        "periciasGanhas": ["acrobacia", "atuacao"]
+    },
+    {
+        "id": "charlatao",
+        "nome": "Charlatão",
+        "nomeIngles": "Charlatan",
+        "periciasGanhas": ["enganacao", "prestidigitacao"]
+    },
+    {
+        "id": "criminoso",
+        "nome": "Criminoso",
+        "nomeIngles": "Criminal",
+        "periciasGanhas": ["enganacao", "furtividade"]
+    },
+    {
+        "id": "erudito",
+        "nome": "Erudito (Sábio)",
+        "nomeIngles": "Sage",
+        "periciasGanhas": ["arcaniasmo", "historia"]
+    },
+    {
+        "id": "estrangeiro",
+        "nome": "Estrangeiro",
+        "nomeIngles": "Outlander",
+        "periciasGanhas": ["atletismo", "sobrevivencia"]
+    },
+    {
+        "id": "heroi_povo",
+        "nome": "Herói do Povo",
+        "nomeIngles": "Folk Hero",
+        "periciasGanhas": ["adestrar_animais", "sobrevivencia"]
+    },
+    {
+        "id": "marinheiro",
+        "nome": "Marinheiro",
+        "nomeIngles": "Sailor",
+        "periciasGanhas": ["atletismo", "percepcao"]
+    },
+    { "id": "nobre", "nome": "Nobre", "nomeIngles": "Noble", "periciasGanhas": ["historia", "persuasao"] },
+    {
+        "id": "orfa_ruas",
+        "nome": "Órfão de Ruas (Urchin)",
+        "nomeIngles": "Urchin",
+        "periciasGanhas": ["furtividade", "prestidigitacao"]
+    },
+    {
+        "id": "soldado",
+        "nome": "Soldado",
+        "nomeIngles": "Soldier",
+        "periciasGanhas": ["atletismo", "intimidacao"]
+    },
+    {
+        "id": "criminoso_espiao",
+        "nome": "Espião",
+        "nomeIngles": "Spy",
+        "periciasGanhas": ["enganacao", "furtividade"]
+    }
+]
