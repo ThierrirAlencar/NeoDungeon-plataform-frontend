@@ -6,6 +6,7 @@
   import { classesDnD5e, racasDnD5e } from '@/templates/dndData'
   import { exampleCharacters } from '@/templates/exampleCharacters'
   import { systemEditingUrl, systemColor, systemLabel } from '@/templates/systemDefinitions'
+import type { RacaDnD5e } from '@/types/Meta/Dungeons/dndTypes'
   import type { optmizedDNDTokenFormat } from '@/types/Meta/Dungeons/optmizedType'
   import type { Character } from '@/types/Meta/undoneCharacterSheet'
   import { rpgSystem } from '@/types/rpgSystemEnum'
@@ -98,7 +99,7 @@
       .toUpperCase()
   }
 
-  // Salva a lista de personagens armazenadas em localStorage
+  // Salva a lista de personagens para json file através da lista armazenada em localStorage
   function saveList(){
     saveCurrentList()
     alert("Lista Salva com sucesso!");
@@ -508,7 +509,7 @@
                     />
                 </div> -->
 
-                <RaceSelector v-model="novoPersonagem.raca"></RaceSelector>
+                <RaceSelector v-model="novoPersonagem.raca as RacaDnD5e"></RaceSelector>
                 <div class="flex flex-col gap-1.5 w-20">
                 <label class="text-xs text-slate-400 font-bold uppercase tracking-wide">Nível</label>
                 <input

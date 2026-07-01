@@ -1,9 +1,9 @@
 import type { DNDitemRarity } from '../enums'
 
 export interface AttributeTypes {
-  nome: String
-  abrev: String
-  descricao: String
+  nome: string
+  abrev: string
+  descricao: string
   pericias: Array<String>
 }
 
@@ -73,3 +73,5 @@ export interface dndSubClasses {
   description:string,
   book_reference?:string //Página do livro (e qual livro)
 }
+
+export type SkillEntry = { value: number; trained: boolean } //Comparativo com o que temos no optmized format

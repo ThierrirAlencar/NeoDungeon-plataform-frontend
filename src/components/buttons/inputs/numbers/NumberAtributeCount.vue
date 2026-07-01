@@ -1,21 +1,28 @@
 <script setup lang="ts">
 import type { AttributeTypes } from '@/types/Meta/Dungeons/dndTypes'
-import { ref } from 'vue'
+import { computed } from 'vue'
 
-const atributeWhole = ref<number>(10)
-const { abrev, descricao, nome, pericias } = defineProps<AttributeTypes>()
+const props = defineProps<AttributeTypes & { modelValue: number }>()
 
 const calcAtributeMod = (e: number): string => {
   const value = Math.floor((e - 10) / 2)
-  console.log(value)
   return value >= 0 ? '+ ' + value : '-' + value
 }
+
+const emit = defineEmits<{
+  'update:modelValue': [value: number]
+}>()
+
+const atributeWhole = computed({
+  get: () => props.modelValue,
+  set: (value: number) => emit('update:modelValue', value),
+})
 </script>
 
 <template>
   <div class="flex flex-row justify-center items-center w-full">
     <label for="abrev" title="descricao" class="p-2 text-white font-black w-1/3"
-      >{{ abrev }}
+      >{{ props.abrev }}
     </label>
     <input
       type="number"
