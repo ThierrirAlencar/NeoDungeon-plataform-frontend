@@ -1,36 +1,32 @@
 <script setup lang="ts">
   import CharacterSheetCard from '@/components/tokens/CharacterSheetCard.vue'
   import RaceSelector from '@/components/tokens/tokenArea/components/raceSelector.vue'
-  import { getCharactersFromLocalStorageOptmizedList, convertOptmizedListToCompactList, updateCharacterLocalStorageValues } from '@/services/Meta/characterList.service'
+  import { getCharactersFromLocalStorageOptmizedList, convertOptmizedListToCompactList, updateCharacterLocalStorageValues, saveCurrentList, removeLocalStorageListItem, defineWorkingSheetById } from '@/services/Meta/characterList.service'
   import { addOptmizedCharacterToCharactersList, buildDummySheetAtLocalStorage } from '@/services/Meta/DND/sheetBuilder.service'
   import { classesDnD5e, racasDnD5e } from '@/templates/dndData'
   import { exampleCharacters } from '@/templates/exampleCharacters'
+  import { systemEditingUrl, systemColor, systemLabel } from '@/templates/systemDefinitions'
+  import type { optmizedDNDTokenFormat } from '@/types/Meta/Dungeons/optmizedType'
   import type { Character } from '@/types/Meta/undoneCharacterSheet'
   import { rpgSystem } from '@/types/rpgSystemEnum'
   import { ref, computed, inject } from 'vue'
 
 
-const _unProcessedList = getCharactersFromLocalStorageOptmizedList()
+  const _unProcessedList = ref<optmizedDNDTokenFormat[]>(getCharactersFromLocalStorageOptmizedList())
 
-//Carrega a lista já existente no localStorage
-const characters= ref<Character[]>(convertOptmizedListToCompactList(_unProcessedList))
-characters.value = characters.value.concat(exampleCharacters)
+  //Carrega a lista já existente no localStorage
+  const characters= ref<Character[]>(convertOptmizedListToCompactList(_unProcessedList.value))
 
-// ref<Character[]>()
 
-  const systemLabel: Record<rpgSystem, string> = {
-    [rpgSystem.DUNGEONS_AND_DRAGONS]: 'D&D 5e',
-    [rpgSystem.PARANORMAL_ORDER]: 'Ordem Paranormal',
-  }
 
-  const systemColor: Record<rpgSystem, string> = {
-    [rpgSystem.DUNGEONS_AND_DRAGONS]: '#B91C1C',
-    [rpgSystem.PARANORMAL_ORDER]: '#45556c',
-  }
+  const busca = ref('') //Query de pesquisa de nome de personagem
 
-  const busca = ref('')
-  const mostrarModal = ref(false)
+  const modal_criacao = ref(false); //Modal usado para criação de personagens
+  const modal_save = ref(false); //Modal Usado para salvar personagens!; 
+  const modal_load = ref(false); //Modal usado para carregar .json de personagens
+  const modal_character = ref(false); //modal usado para acessar uma das páginas de personagem;
 
+  //Controle de filtro de personagens
   const personagensFiltrados = computed(() =>
     characters.value.filter(
       (c) =>
@@ -48,6 +44,7 @@ characters.value = characters.value.concat(exampleCharacters)
     classe: undefined,
     nivel: 1,
     raca: undefined,
+    id:characters.value.length+1
   })
 
   //adiciona personagens a lista de personagens no localStorage
@@ -74,14 +71,21 @@ characters.value = characters.value.concat(exampleCharacters)
         classe: undefined,
         nivel: 1,
         raca: undefined,
+        id:characters.value.length+1
       }
     
-    mostrarModal.value = false
+    modal_criacao.value = false
   }
 
   //Adicionar função para remover do local storage também 
-  function removerPersonagem(nome: string) {
-    characters.value = characters.value.filter((c) => c.name !== nome)
+  function removerPersonagem(id:number) {
+    let _index_for_removal = characters.value.find(e=> e.id==id);
+    if(_index_for_removal){
+      removeLocalStorageListItem(_index_for_removal.id);
+      characters.value = characters.value.filter((c) => c.id !== id)
+    }else{
+      console.warn("no index found with specified name");
+    }
   }
 
   // Iniciais para avatar placeholder (Usado quando a imagem não é informada)
@@ -94,8 +98,70 @@ characters.value = characters.value.concat(exampleCharacters)
       .toUpperCase()
   }
 
+  // Salva a lista de personagens armazenadas em localStorage
+  function saveList(){
+    saveCurrentList()
+    alert("Lista Salva com sucesso!");
+  }
 
+  //Carrega a lista de personagens e os armazena em localstorage
+  function loadList(){
+    if(loadedData.value){
+      loadedData.value.map(e=>{
+        addOptmizedCharacterToCharactersList(e)
+      })
 
+      alert(`${loadedData.value.length} personagens adicionados com sucesso!`)
+    }
+  }
+
+  //Redirectiona o usuário para a ficha do personagem acessado.
+  function redirectionarFicha(id:number){
+    defineWorkingSheetById(id);
+    let _character = characters.value.find(e=> e.id==id);
+    if(!_character){return}
+    let url = systemEditingUrl[_character.system];
+    window.location.href = url;
+  }
+
+  // Valores a seguir para função de carregar personagem através de JSONs
+  const loadedData = ref<Array<optmizedDNDTokenFormat> | null>(null)
+  const errorMessage = ref('')
+
+  const handleFileUpload = (event: Event) => {
+    // Clear previous output/errors
+    loadedData.value = null
+    errorMessage.value = ''
+    const target = event.target as HTMLInputElement
+
+    //Checa se files existe
+    if (!target.files) {return}
+
+    // Captura o objeto de arquivo selecionado
+    const file = target.files[0]
+
+    if (!file) {return}
+
+    const reader = new FileReader()
+
+    // O que acontece com o final da leitura
+    reader.onload = (e) => {
+      try {
+        let _target = e.target;
+        
+        if(!_target)return;
+
+        const textContent = _target.result
+        // Parse raw string content into an accessible JavaScript object
+        loadedData.value = JSON.parse(String(textContent)) as Array<optmizedDNDTokenFormat>
+      } catch (error) {
+        errorMessage.value = 'Invalid JSON structure. Please check your file.'
+      }
+    }
+
+    // Trigger the reading process as a text file
+    reader.readAsText(file)
+  }
 
 </script>
 
@@ -139,8 +205,28 @@ characters.value = characters.value.concat(exampleCharacters)
               class="text-white text-sm bg-slate-900 border border-slate-700 focus:border-red-600 outline-none rounded-xl pl-9 pr-4 py-2.5 w-52 transition-colors"
             />
           </div>
+
+          <!-- Carregar Lista de Personagem -->
           <button
-            @click="mostrarModal = true"
+            @click="modal_load = true"
+            class="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 active:bg-gray-800 text-white font-bold px-5 py-2.5 rounded-xl transition-colors text-sm whitespace-nowrap"
+          >
+            <label class="pi pi-folder-open font-extrabold text-xl"></label>
+            Carregar Personagens
+          </button>
+
+          <!-- Salvar Lista de Personagens -->
+          <button
+            @click="modal_save = true"
+            class="flex items-center gap-2 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-bold px-5 py-2.5 rounded-xl transition-colors text-sm whitespace-nowrap"
+          >
+            <label class="pi pi-save font-extrabold text-l"></label>
+            Salvar Personagens
+          </button>
+
+          <!-- Criar novo personagem -->
+          <button
+            @click="modal_criacao = true"
             class="flex items-center gap-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold px-5 py-2.5 rounded-xl transition-colors text-sm whitespace-nowrap"
           >
             <svg
@@ -168,7 +254,7 @@ characters.value = characters.value.concat(exampleCharacters)
         v-if="personagensFiltrados.length === 0"
         class="flex flex-col items-center justify-center py-32 gap-4 text-center"
       >
-        <span class="text-5xl select-none">🧙</span>
+        <img src="../../../public/images/loading-icon-01.gif" style="max-width: 80px;max-height: 80px;">
         <p class="text-slate-400 font-bold text-lg">
           {{ busca ? 'Nenhum personagem encontrado' : 'Nenhum personagem ainda' }}
         </p>
@@ -181,7 +267,7 @@ characters.value = characters.value.concat(exampleCharacters)
         </p>
         <button
           v-if="!busca"
-          @click="mostrarModal = true"
+          @click="modal_criacao = true"
           class="mt-2 bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-colors"
         >
           Criar personagem
@@ -252,7 +338,7 @@ characters.value = characters.value.concat(exampleCharacters)
 
             <!-- Botão remover no hover -->
             <button
-              @click.stop="removerPersonagem(c.name)"
+              @click.stop="removerPersonagem(c.id)"
               class="absolute top-3 right-3 w-7 h-7 rounded-full bg-slate-950/80 border border-slate-700 text-slate-400 hover:text-red-500 hover:border-red-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
               title="Remover personagem"
             >
@@ -301,8 +387,8 @@ characters.value = characters.value.concat(exampleCharacters)
 
             <!-- Rodapé do card: botão abrir ficha -->
             <div class="mt-auto pt-3 border-t border-slate-800">
-              <RouterLink
-                :to="`/ficha/${c.name}`"
+              <a
+                v-on:click.stop="redirectionarFicha(c.id)"
                 class="flex items-center justify-between text-xs font-bold text-slate-400 hover:text-white transition-colors group/link"
               >
                 <span>Abrir ficha</span>
@@ -317,7 +403,7 @@ characters.value = characters.value.concat(exampleCharacters)
                 >
                   <path d="M2 7h10M7 2l5 5-5 5" />
                 </svg>
-              </RouterLink>
+              </a>
             </div>
           </div>
         </div>
@@ -325,7 +411,8 @@ characters.value = characters.value.concat(exampleCharacters)
         <!-- Card "adicionar" sempre no final -->
         <div
           key="__add__"
-          @click="mostrarModal = true"
+          @click="modal_criacao = true"
+          v-if="characters.length>0"
           class="border-2 border-dashed border-slate-800 hover:border-red-600/50 rounded-2xl h-72 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 hover:-translate-y-1 group"
         >
           <div
@@ -354,135 +441,332 @@ characters.value = characters.value.concat(exampleCharacters)
 
     <!-- ═══ MODAL CRIAR PERSONAGEM ═══ -->
     <Transition name="modal-fade">
-      <div
-        v-if="mostrarModal"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-        @click.self="mostrarModal = false"
-      >
         <div
-          class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-5"
+        v-if="modal_criacao"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        @click.self="modal_criacao = false"
         >
-          <!-- Header do modal -->
-          <div class="flex items-start justify-between">
+        <div
+            class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-5"
+        >
+            <!-- Header do modal -->
+            <div class="flex items-start justify-between">
             <div>
-              <p class="text-red-600 text-xs font-bold tracking-[0.3em] uppercase mb-1">Novo</p>
-              <h2 class="text-2xl font-black" style="font-family: Georgia, serif">
+                <p class="text-red-600 text-xs font-bold tracking-[0.3em] uppercase mb-1">Novo</p>
+                <h2 class="text-2xl font-black" style="font-family: Georgia, serif">
                 Criar Personagem
-              </h2>
+                </h2>
             </div>
             <button
-              @click="mostrarModal = false"
-              class="w-8 h-8 rounded-full border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 flex items-center justify-center transition-all mt-1"
+                @click="modal_criacao = false"
+                class="w-8 h-8 rounded-full border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 flex items-center justify-center transition-all mt-1"
             >
-              <svg
+                <svg
                 width="12"
                 height="12"
                 viewBox="0 0 12 12"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-              >
+                >
                 <path d="M1 1l10 10M11 1l-10 10" />
-              </svg>
+                </svg>
             </button>
-          </div>
-
-          <hr class="border-slate-800" />
-
-          <!-- Campos -->
-          <div class="flex flex-col gap-4">
+            </div>
+            <hr class="border-slate-800" />
+             <!-- Campos -->
+            <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs text-slate-400 font-bold uppercase tracking-wide"
+                <label class="text-xs text-slate-400 font-bold uppercase tracking-wide"
                 >Nome do Personagem <span class="text-red-600">*</span></label
-              >
-              <input
+                >
+                <input
                 v-model="novoPersonagem.name"
                 type="text"
                 placeholder="Avarel Dremur"
                 class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors"
-              />
+                />
             </div>
 
             <div class="flex flex-row gap-3">
-              <div class="flex flex-col gap-1.5 flex-1">
-                <label class="text-xs text-slate-400 font-bold uppercase tracking-wide"
-                  >Classe</label
-                >
+                <div class="flex flex-col gap-1.5 flex-1">
+                <label class="text-xs text-slate-400 font-bold uppercase tracking-wide">Classe</label>
                 <input
-                  v-model="novoPersonagem.classe"
-                  type="text"
-                  placeholder="Mago"
-                  class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors"
+                    v-model="novoPersonagem.classe"
+                    type="text"
+                    placeholder="Mago"
+                    class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors"
                 />
-              </div>
-              <!-- <div class="flex flex-col gap-1.5 flex-1">
-                <label class="text-xs text-slate-400 font-bold uppercase tracking-wide">Raça</label>
-                <input
-                  v-model="novoPersonagem.raca"
-                  type="text"
-                  placeholder="Elfo"
-                  class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors"
-                />
-              </div> -->
+                </div>
+                <!-- <div class="flex flex-col gap-1.5 flex-1">
+                    <label class="text-xs text-slate-400 font-bold uppercase tracking-wide">Raça</label>
+                    <input
+                    v-model="novoPersonagem.raca"
+                    type="text"
+                    placeholder="Elfo"
+                    class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors"
+                    />
+                </div> -->
 
-              <RaceSelector v-model="novoPersonagem.raca"></RaceSelector>
-              <div class="flex flex-col gap-1.5 w-20">
-                <label class="text-xs text-slate-400 font-bold uppercase tracking-wide"
-                  >Nível</label
-                >
+                <RaceSelector v-model="novoPersonagem.raca"></RaceSelector>
+                <div class="flex flex-col gap-1.5 w-20">
+                <label class="text-xs text-slate-400 font-bold uppercase tracking-wide">Nível</label>
                 <input
-                  v-model="novoPersonagem.nivel"
-                  type="number"
-                  min="1"
-                  max="20"
-                  class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors text-center"
+                    v-model="novoPersonagem.nivel"
+                    type="number"
+                    min="1"
+                    max="20"
+                    class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors text-center"
                 />
-              </div>
+                </div>
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs text-slate-400 font-bold uppercase tracking-wide"
+                <label class="text-xs text-slate-400 font-bold uppercase tracking-wide"
                 >Descrição</label
-              >
-              <textarea
+                >
+                <textarea
                 v-model="novoPersonagem.description"
                 rows="2"
                 placeholder="Uma breve descrição do personagem..."
                 class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors resize-none"
-              />
+                />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs text-slate-400 font-bold uppercase tracking-wide"
+                <label class="text-xs text-slate-400 font-bold uppercase tracking-wide"
                 >URL da Imagem</label
-              >
-              <input
+                >
+                <input
                 v-model="novoPersonagem.imageUrl"
                 type="url"
                 placeholder="https://..."
                 class="text-white rounded-xl bg-slate-800 border border-slate-700 focus:border-red-600 outline-none p-2.5 text-sm transition-colors"
-              />
+                />
             </div>
-          </div>
-
-          <!-- Ações -->
-          <div class="flex gap-3 pt-1">
+            </div>
+            <!-- Ações -->
+            <div class="flex gap-3 pt-1">
             <button
-              @click="adicionarPersonagem"
-              :disabled="!novoPersonagem.name.trim()"
-              class="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-2.5 rounded-xl text-sm transition-colors"
+                @click="adicionarPersonagem"
+                :disabled="!novoPersonagem.name.trim()"
+                class="flex-1 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-2.5 rounded-xl text-sm transition-colors"
             >
-              Criar personagem
+                Criar personagem
             </button>
             <button
-              @click="mostrarModal = false"
-              class="border border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors"
+                @click="modal_criacao = false"
+                class="border border-slate-700 hover:border-slate-500 text-slate-400 hover:text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors"
             >
-              Cancelar
+                Cancelar
             </button>
-          </div>
+            </div>
         </div>
-      </div>
+        </div>
+    </Transition>
+
+    <!-- Modal Salvar Personagens -->
+    <Transition name="modal-fade_save_characters">
+        <div
+        v-if="modal_save"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        @click.self="modal_save = false"
+        >
+        <div
+            class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-5"
+        >
+            <!-- Header do modal_savel -->
+            <div class="flex items-start justify-between">
+            <div>
+                <p class="text-green-600 text-xs font-bold tracking-[0.3em] uppercase mb-1">Salvar</p>
+                <h2 class="text-2xl font-black" style="font-family: Georgia, serif">
+                Salvar Lista de Personagens
+                </h2>
+            </div>
+            <button
+                @click="modal_save = false"
+                class="w-8 h-8 rounded-full border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 flex items-center justify-center transition-all mt-1"
+            >
+                <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                >
+                <path d="M1 1l10 10M11 1l-10 10" />
+                </svg>
+            </button>
+            </div>
+
+            <hr class="border-slate-800" />
+            <p class="text-gray-400 text-xs font-bold tracking-[0.1em] uppercase mb-1">Você pode escolher salvar online quando a API estiver pronta, enquanto isso salve localmente através de uma lista JSON que pode ser carregada na plataforma</p>
+            <!-- Ações -->
+            <div class="flex gap-3 pt-1 flex-col">
+              <button
+                    @click="saveList"
+                    class="flex-1 bg-green-600 hover:bg-green-700 cursor-pointer text-white font-bold py-2.5 rounded-xl gap-2 transition-colors"
+                >
+                  <span class="pi pi-folder p-2 font-extrabold text-xl"></span>Salvar Localmente
+                </button>
+                
+              <button
+                    @click="saveList"
+                    :disabled="true"
+                    class="flex-1 bg-green-600 disabled:bg-green-700 disabled:cursor-default hover:bg-green-700 text-white font-bold py-2.5 rounded-xl text-sm transition-colors"
+                >
+                    <span class="pi pi-globe p-2 font-extrabold text-xl"></span> Salvar Online 
+              </button>              
+              <button
+                  @click="modal_save = false"
+                  class="border border-slate-700 cursor-pointer hover:border-slate-500 text-slate-400 hover:text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors"
+              >
+                  Cancelar
+              </button>
+            </div>
+        </div>
+        </div>
+    </Transition>
+
+    <!-- Modal Carregar Personagens -->
+    <Transition name="modal-fade_load_characters">
+        <div
+        v-if="modal_load"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        @click.self="modal_load = false"
+        >
+        <div
+            class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-5"
+        >
+            <!-- Header do modal_loadl -->
+            <div class="flex items-start justify-between">
+            <div>
+                <p class="text-green-600 text-xs font-bold tracking-[0.3em] uppercase mb-1">Carregar</p>
+                <h2 class="text-2xl font-black" style="font-family: Georgia, serif">
+                Carregar Lista de Personagens
+                </h2>
+            </div>
+            <button
+                @click="modal_load = false"
+                class="w-8 h-8 rounded-full border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 flex items-center justify-center transition-all mt-1"
+            >
+                <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                >
+                <path d="M1 1l10 10M11 1l-10 10" />
+                </svg>
+            </button>
+            </div>
+
+            <hr class="border-slate-800" />
+
+    
+          <div class="file-uploader">
+            <input 
+              type="file" 
+              accept=".json" 
+              @change="handleFileUpload" 
+              class="bg-yellow-100 text-gray-700 rounded-2xl w-full h-fit  p-2 text-center cursor-pointer border-gray-500 
+              border-4 border-dashed text-xs flex items-center justify-center shrink-0"
+            />
+          </div>
+        
+            
+            <p class="text-gray-400 text-xs font-bold tracking-[0.1em] uppercase mb-1">Você pode escolher salvar online quando a API estiver pronta, enquanto isso salve localmente através de uma lista JSON que pode ser carregada na plataforma</p>
+            <!-- Ações -->
+            <div class="flex gap-3 pt-1 flex-col">
+              <button
+                    @click="loadList"
+                    class="flex-1 bg-green-600 hover:bg-green-700 cursor-pointer text-white font-bold py-2.5 rounded-xl gap-2 transition-colors"
+                >
+                  <span class="pi pi-folder p-2 font-extrabold text-xl"></span>Carregar Personagens
+              </button>
+            
+              <button
+                  @click="modal_load = false"
+                  class="border border-slate-700 cursor-pointer hover:border-slate-500 text-slate-400 hover:text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors"
+              >
+                  Cancelar
+              </button>
+            </div>
+        </div>
+        </div>
+    </Transition>
+
+    <!-- Modal de Acesso à Personagens -->
+    <Transition name="modal-fade_view_characters">
+        <div
+        v-if="modal_load"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        @click.self="modal_load = false"
+        >
+        <div
+            class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl flex flex-col gap-5"
+        >
+            <!-- Header do modal_loadl -->
+            <div class="flex items-start justify-between">
+            <div>
+                <p class="text-green-600 text-xs font-bold tracking-[0.3em] uppercase mb-1">Carregar</p>
+                <h2 class="text-2xl font-black" style="font-family: Georgia, serif">
+                Carregar Lista de Personagens
+                </h2>
+            </div>
+            <button
+                @click="modal_load = false"
+                class="w-8 h-8 rounded-full border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 flex items-center justify-center transition-all mt-1"
+            >
+                <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                >
+                <path d="M1 1l10 10M11 1l-10 10" />
+                </svg>
+            </button>
+            </div>
+
+            <hr class="border-slate-800" />
+
+    
+          <div class="file-uploader">
+            <input 
+              type="file" 
+              accept=".json" 
+              @change="handleFileUpload" 
+              class="bg-yellow-100 text-gray-700 rounded-2xl w-full h-fit  p-2 text-center cursor-pointer border-gray-500 
+              border-4 border-dashed text-xs flex items-center justify-center shrink-0"
+            />
+          </div>
+        
+            
+            <p class="text-gray-400 text-xs font-bold tracking-[0.1em] uppercase mb-1">Você pode escolher salvar online quando a API estiver pronta, enquanto isso salve localmente através de uma lista JSON que pode ser carregada na plataforma</p>
+            <!-- Ações -->
+            <div class="flex gap-3 pt-1 flex-col">
+              <button
+                    @click="loadList"
+                    class="flex-1 bg-green-600 hover:bg-green-700 cursor-pointer text-white font-bold py-2.5 rounded-xl gap-2 transition-colors"
+                >
+                  <span class="pi pi-folder p-2 font-extrabold text-xl"></span>Carregar Personagens
+              </button>
+            
+              <button
+                  @click="modal_load = false"
+                  class="border border-slate-700 cursor-pointer hover:border-slate-500 text-slate-400 hover:text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-colors"
+              >
+                  Cancelar
+              </button>
+            </div>
+        </div>
+        </div>
     </Transition>
   </div>
 </template>

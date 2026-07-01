@@ -1,7 +1,8 @@
 import { rpgSystem } from "@/types/rpgSystemEnum";
 import { classesDnD5e, racasDnD5e } from "./dndData";
+import type { Character } from "@/types/Meta/undoneCharacterSheet";
 
-export const exampleCharacters = [
+export const exampleCharacters:Array<Character> = [
     {
         name: 'Avarel Dremur',
         description: 'A cool Arackoga character',
@@ -10,6 +11,7 @@ export const exampleCharacters = [
         classe: classesDnD5e[2],
         nivel: 5,
         raca: racasDnD5e[1],
+        id:-1
     },
     {
         name: "Borun 'O Bom'",
@@ -19,6 +21,7 @@ export const exampleCharacters = [
         classe: classesDnD5e[1],
         nivel: 10,
         raca: racasDnD5e[2],
+        id:-2
     },
     {
         name: 'Vikotr Voyer',
@@ -28,6 +31,7 @@ export const exampleCharacters = [
         classe: classesDnD5e[3],
         nivel: 15,
         raca: racasDnD5e[3],
+        id:-3
     },
     {
         name: 'Jason Collins',
@@ -37,5 +41,6 @@ export const exampleCharacters = [
         classe: classesDnD5e[6],
         nivel: 20,
         raca: racasDnD5e[3],
+        id:-4
     },
 ]

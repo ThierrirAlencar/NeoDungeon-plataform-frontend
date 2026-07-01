@@ -25,7 +25,7 @@ export function buildDummySheetAtLocalStorage(dummy_sent:Partial<Character>): op
         //It uses the new Id generated
         const dummy_sheet: optmizedDNDTokenFormat = {
             identification: {
-                id: sheet_id, //builds with the predefined character id
+                id: dummy_sent.id?dummy_sent.id : 0, //builds with the predefined character id (Before Was made with sheet_id)
                 owner_id: '',
                 created_at: new Date(0),
                 system: rpgSystem.DUNGEONS_AND_DRAGONS,
@@ -62,6 +62,7 @@ export function buildDummySheetAtLocalStorage(dummy_sent:Partial<Character>): op
                 character_equipments: [],
                 character_extensive_data: {},
                 character_numeric_data: {
+                    inspired:false,
                     proficiency_bonus: 0,
                     armour_class: 0,
                     initiative: 0,
@@ -128,6 +129,7 @@ export function buildDummySheetAtLocalStorage(dummy_sent:Partial<Character>): op
         return JSON.parse(_stored_dummy_sheet) as optmizedDNDTokenFormat
 }
 
+//Adiciona personagens a lista LS de personagens
 export function addOptmizedCharacterToCharactersList(data:optmizedDNDTokenFormat){
     
     //recebe a lista der personagens

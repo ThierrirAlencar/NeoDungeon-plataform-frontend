@@ -1,20 +1,12 @@
 <script setup lang="ts">
 import {
-  type AntecedenteDnD5e,
-  type RacaDnD5e,
-  type AttributeTypes,
-  type TendenciaDnD5e,
   type ClasseDnD5e,
 } from '../../../types/Meta/Dungeons/dndTypes.ts'
 import NumberAtributeCount from '../../buttons/inputs/numbers/NumberAtributeCount.vue'
 import TokenInputText from '../../buttons/inputs/text/TokenInputText.vue'
 import {
-  antecedentesDnD5e,
   atributosDnD5e,
-  classesDnD5e,
   periciasDnD5e,
-  racasDnD5e,
-  tendenciasDnD5e,
 } from '../../../templates/dndData.ts'
 import NumberPericiasCount from '../../buttons/inputs/numbers/NumberPericiasCount.vue'
 import { ref, computed } from 'vue'
@@ -28,50 +20,26 @@ import PlayerNameSelector from './components/playerNameSelector.vue'
 import ExperienceSelector from './components/experienceSelector.vue'
 import CharacterNameSelector from './components/characterNameSelector.vue'
 import CharacterImageSelector from './components/characterImageSelector.vue'
-import { LOCAL_STORAGE_BOUND_KEYS } from '@/core/keys.ts'
+
+import TokenSaveOptionsArea from "../tokenSaveOptionsArea.vue" 
 import type { optmizedDNDTokenFormat } from '@/types/Meta/Dungeons/optmizedType.ts'
 import {
-  getCurrentEditingCharacter,
-  updateCharacterLocalStorageValues,
+  getCurrentEditingCharacter
 } from '@/services/Meta/characterList.service.ts'
 
 const themeColour = 'text-red-600'
 
 //carrega personagem selecionado
 const loaded_sheet: optmizedDNDTokenFormat = getCurrentEditingCharacter() as optmizedDNDTokenFormat
-// const sheet_values = ref({
-//   //Class level
-//   level: loaded_sheet.character.character_class.level,
-//   //Lifepoints
-//   max_hp: loaded_sheet.character.character_numeric_data.lifepoints.max,
-//   current_hp:loaded_sheet.character.character_numeric_data.lifepoints.current,
-//   temporary_hp:loaded_sheet.character.character_numeric_data.lifepoints.temporary,
-//   //Iniciativa, Deslocamento e armadura
-//   initiative:loaded_sheet.character.character_numeric_data.initiative,
-//   speed:loaded_sheet.character.character_numeric_data.speed,
-//   armour_class:loaded_sheet.character.character_numeric_data.armour_class,
-//   //Dados de vida
-//   total_life_dices:0, //update later
-//   used_life_dices:0, //update later
-//   //morte
-//   death_successes: loaded_sheet.character.character_numeric_data.death_dices.sucesses,
-//   death_fails: loaded_sheet.character.character_numeric_data.death_dices.fails,
-//   //Inspiration
-//   inspiration:false //update later
-// })
 
 const sheet_values = ref<optmizedDNDTokenFormat>(loaded_sheet)
 const { pc, pe, pl, po, pp } = loaded_sheet.character.character_numeric_data.economy
 const classeSelecionada = ref<ClasseDnD5e>(loaded_sheet.character.character_class.class || null) //Carrega com os valores que possuimos
 
+//Verifica se houveram atualizações
+const changes_made = ref<boolean>(loaded_sheet!=sheet_values.value); //Se houver mudanças exibe barra de save
+
 // Combate
-// const nivel = ref(0)
-// const hpMaximo = ref(0)
-// const hpAtual = ref(0)
-// const hpTemporario = ref(0)
-// const classArmadura = ref(10)
-// const iniciativa = ref(0)
-// const deslocamento = ref(9) // 9 metros padrão
 const dadosVidaTotal = ref(1)
 const dadosVidaGastos = ref(0)
 
@@ -123,12 +91,15 @@ const outrasProficiencias = ref('')
 const caracteristicasHabilidades = ref('')
 
 //Atualiza a cada 2 segundos a lista do localstorage
-setInterval(() => {
-  updateCharacterLocalStorageValues(loaded_sheet)
-}, 2000)
+// setInterval(() => {
+//   console.log(loaded_sheet)
+//   updateCharacterLocalStorageOnListValue(loaded_sheet);
+//   updateCharacterLocalStorageValues(loaded_sheet)
+// }, 20000)
 </script>
 
 <template>
+  <TokenSaveOptionsArea v-if="changes_made" :editing_sheet="sheet_values"></TokenSaveOptionsArea>
   <div class="w-full bg-slate-950 p-8 flex flex-col gap-6">
     <!-- ═══ LINHA 1: Cabeçalho da Ficha ═══ -->
     <div class="flex flex-row gap-4 items-end flex-wrap">
@@ -137,11 +108,11 @@ setInterval(() => {
       <!-- Campos de texto do cabeçalho -->
       <div class="flex flex-wrap gap-3 flex-1">
         <!-- Character Name Selector -->
-        <CharacterNameSelector></CharacterNameSelector>
+        <CharacterNameSelector v-model="loaded_sheet.character.character_name"></CharacterNameSelector>
         <!-- Nome do Jogador -->
-        <PlayerNameSelector></PlayerNameSelector>
+        <PlayerNameSelector :label="loaded_sheet.public.ownerName"></PlayerNameSelector>
         <!-- Seletor de Classes -->
-        <ClassSelector></ClassSelector>
+        <ClassSelector :label="loaded_sheet.character.character_class.class"></ClassSelector>
         <!-- Seletor de Nìveis -->
         <LevelSelector></LevelSelector>
         <!-- Seletor de Raças -->

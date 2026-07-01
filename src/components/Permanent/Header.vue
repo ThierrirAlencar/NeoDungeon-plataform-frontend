@@ -4,7 +4,6 @@
   import BntCommon from "../buttons/bntCommon.vue";
   import { routes } from "@/core/routes.ts";
 
-
   const currentLabel = ref<string>("None");
 
   //Updates to check for change on routes
@@ -24,7 +23,7 @@
     <div class="flex justify-center items-center flex-row gap-3 w-1/3">
       <TileStyledAnchor title="Home" url="/" />
       <TileStyledAnchor title="Fichas" url="/tokens" />
-      <TileStyledAnchor title="Ferramentas" url="/tokens/dungeons" />
+      <!-- <TileStyledAnchor title="Ferramentas" url="/tokens/dungeons" /> -->
       <TileStyledAnchor title="Comunidade" url="/community" />
     </div>
     <div class="flex justify-center items-center flex-row gap-3 w-1/3">

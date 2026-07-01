@@ -11,7 +11,8 @@ const racaSelecionada = ref<RacaDnD5e>()
     <label class="text-gray-400 text-xs font-bold uppercase tracking-wide"
       ><strong>Raça</strong></label
     >
-    <select
+    <select 
+      placeholder="Elfo" 
       v-model="racaSelecionada"
       class="text-white rounded-xl bg-slate-800 p-2 border border-slate-700 focus:border-red-600 outline-none"
     >

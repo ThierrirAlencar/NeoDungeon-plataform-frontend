@@ -12,9 +12,9 @@
             <h1 class="text-white font-bold text-center text-4xl ">Ficha de Personagem <strong class="text-red-700 ">Dungeons and Dragons</strong></h1>
         </div>
         <div class="w-1/2 flex flex-row justify-center align-middle gap-4">
-            <TileStyledAnchor title="Magias" url="/tokens/magias"></TileStyledAnchor>
+            <TileStyledAnchor title="Magias" url="/tokens/spells"></TileStyledAnchor>
             <TileStyledAnchor title="Transformações" url="/tokens/formas"></TileStyledAnchor>
-            <TileStyledAnchor title="Anotações" url="/tokens/notas"></TileStyledAnchor>
+            <TileStyledAnchor title="Anotações" url="/tokens/notes"></TileStyledAnchor>
             <TileStyledAnchor title="Geral" url="/tokens"></TileStyledAnchor>
             <TileStyledAnchor title="Dados" url="/tokens/dices"></TileStyledAnchor>
         </div>

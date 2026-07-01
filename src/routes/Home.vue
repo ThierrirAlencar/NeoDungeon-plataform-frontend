@@ -4,6 +4,7 @@
   import Slider from '@/components/other/slider.vue'
   import decorativeDivisor from '@/components/other/decorativeDivisor.vue'
   import { classesDnD5e } from '@/templates/dndData.ts'
+  import { systemColor } from '@/templates/systemDefinitions.ts'
   
   const features = [
     {
@@ -38,7 +39,26 @@
     },
   ]
 
-  const classes = classesDnD5e
+  const availableSystems = [
+    {
+      name:"Dungeons And Dragons",
+      completed:true,
+      color:"#fb2c36"
+    },
+    {
+      name:"Ordem Paranormal",
+      completed:false,
+      color:"#155dfc"
+    },
+    {
+      name:"Feiticeiros e Maldições",
+      completed:false,
+      color:"oklch(62.7% 0.194 149.214)"
+    }
+  ]
+
+  const classes = classesDnD5e;
+
 </script>
 
 <template>
@@ -48,35 +68,28 @@
       <!-- Conteúdo hero -->
       <div class="z-10 w-full flex flex-col items-center text-center gap-2">
         <div class="flex w-3/4 justify-center items-center flex-wrap gap-6">
-          <span class="text-xs font-bold tracking-[0.3em] uppercase text-red-500 border-red-600/30 border-3 px-4 py-1 rounded-full">
-            D&D 5ª Edição
-          </span>
-                
-          <span class="text-xs font-bold tracking-[0.3em] uppercase text-orange-600 border-3 border-orange-600/30 px-4 py-1 rounded-full">
-            Pokemon
-          </span>
-
-          <span class="text-xs font-bold tracking-[0.3em] uppercase text-blue-600 border-3 border-slate-blue/30 px-4 py-1 rounded-full">
-            Ordem Paranormal
-          </span>
-
-          <span class="text-xs font-bold tracking-[0.3em] uppercase text-green-600 border-3 border-green-600/30 px-4 py-1 rounded-full">
-            Feiticeiros e Maldições
+          <span  
+          v-for="c in availableSystems"
+          :key="c.name"
+          class="text-xs font-bold tracking-[0.3em] uppercase 600/30 border-3 px-4 py-1 rounded-full" :style="{backgroundColor:c.color}">
+            {{ c.name }}
           </span>
         </div>
 
-        <h1 class="text-6xl lg:text-7xl font-black leading-none tracking-tight"
+        <h1 class="text-6xl lg:text-3xl gap-4 font-black leading-none tracking-tight"
           style="font-family: 'Georgia', serif;">
-          Uma Plataforma Aprimorada<br />
-          <span class="text-red-600">De Gestão de Fichas</span>
+          <span class="text-red-600 text-6xl lg:text-7xl m-6">NeoDungeon</span><br>
+          Uma plataforma de gestão de fichas para múltiplos sistemas
+          <br />
         </h1>
 
-        <p class="text-lg text-slate-400 max-w-xl leading-relaxed">
-          Crie e gerencie a ficha do seu personagem de RPG de forma completa.
-          Una-se a uma comunidade de RPG, suplementos, Homebrews e Builds da comunidade. 
+        <p class="text-lg m-6 text-slate-300 max-w-xl font-bold leading-relaxed">
+          A plataforma foi desenvolvida para mim e meus amigos!
+          Não fizemos absolutamente nada pensando em você!
+          Não seja bem vindo!
         </p>
 
-        <div class="flex flex-row gap-4 mt-2 flex-wrap justify-center">
+        <!-- <div class="flex flex-row gap-4 mt-2 flex-wrap justify-center">
           <a href="/tokens"
             class="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold px-8 py-3 rounded-xl transition-colors text-sm tracking-wide">
             Criar Personagem
@@ -85,25 +98,8 @@
             class="border-3 border-blue-600 hover:border-blue-400 text-slate-300 hover:text-white font-bold px-8 py-3 rounded-xl transition-colors text-sm tracking-wide">
             Ver como funciona
           </a>
-        </div>
+        </div> -->
 
-        <!-- Stats decorativos -->
-        <div class="flex flex-row gap-8 mt-8 text-center">
-          <div>
-            <p class="text-3xl font-black text-white" style="font-family: Georgia, serif;">12</p>
-            <p class="text-xs text-slate-500 uppercase tracking-wide mt-1">Classes</p>
-          </div>
-          <div class="w-px bg-slate-700" />
-          <div>
-            <p class="text-3xl font-black text-white" style="font-family: Georgia, serif;">9</p>
-            <p class="text-xs text-slate-500 uppercase tracking-wide mt-1">Raças</p>
-          </div>
-          <div class="w-px bg-slate-700" />
-          <div>
-            <p class="text-3xl font-black text-white" style="font-family: Georgia, serif;">∞</p>
-            <p class="text-xs text-slate-500 uppercase tracking-wide mt-1">Histórias</p>
-          </div>
-        </div>
       </div>
 
       <!-- Seta scroll -->
@@ -121,7 +117,7 @@
       </div>
     </section>
 
-    <!-- ═══ FEATURES ═══ -->
+    <!-- ═══ FEATURES ═══
     <section id="como-funciona" class="py-24 px-6 dotBg bg-slate-950/30">
       <div class="max-w-5xl mx-auto">
         <div class="text-center mb-16">
@@ -144,7 +140,7 @@
         </div>
       </div>
       
-    </section>
+    </section> -->
 
     <decorativeDivisor></decorativeDivisor>
 
@@ -159,7 +155,7 @@
           </h2>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div class="flex flex-wrap justify-center items-center gap-3">
           <div
             v-for="c in classes"
             :key="c.nome"
@@ -167,7 +163,7 @@
           >
             <span
               class="text-2xl font-black font-mono group-hover:scale-110 transition-transform"
-              :style="{ color: c.cor }"
+              :style="{ color: c.colour }"
             >{{ c.dadoVida }}</span>
             <span class="text-slate-300 text-xs font-bold text-center">{{ c.nome }}</span>
           </div>
