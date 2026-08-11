@@ -1,5 +1,13 @@
 <script setup lang="ts">
     const themeColour = 'text-red-600'
+
+    const props = defineProps<{
+        modelValue:string | undefined
+    }>()
+
+    defineEmits<{
+        'update:modelValue': [value: string]
+    }>()
 </script>
 
 <template>
@@ -9,8 +17,10 @@
         >
         <input
         type="text"
+        :value=props.modelValue
         class="text-white rounded-xl bg-slate-800 p-2 border border-slate-700 focus:border-red-600 outline-none"
-        placeholder="Manuel Dias"
+        placeholder="Nome do usuário"
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         />
     </div>
 </template>

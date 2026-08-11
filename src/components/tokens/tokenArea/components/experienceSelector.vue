@@ -1,7 +1,13 @@
 
 <script setup lang="ts">
     import { ref } from 'vue';
-    const xp = ref(0)
+    const props = defineProps<{
+        modelValue:number
+    }>()
+
+    defineEmits<{
+        'update:modelValue': [value: number]
+    }>()
     
 </script>
 <template>
@@ -11,10 +17,11 @@
                 >Experiência (XP)</label
             >
             <input
-                v-model="xp"
+                :value=props.modelValue
                 type="number"
                 min="0"
                 class="text-white rounded-xl bg-slate-800 p-2 border border-slate-700 focus:border-red-600 outline-none"
+                @input="$emit('update:modelValue', Number(($event.target as HTMLInputElement).value))"
             />
             </div>
 

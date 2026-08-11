@@ -16,11 +16,7 @@
         {
             alt: 'Exemplo 2',
             url: '/images/patchImages/patch-displayImage-01-v0.0.2.png',
-        },
-        {
-            alt: 'Exemplo 2',
-            url: '/images/patchImages/patch-displayImage-01-v0.0.3.png',
-        },
+        }
     ];
 
     function next() {

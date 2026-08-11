@@ -69,7 +69,7 @@
       <div class="z-10 w-full flex flex-col items-center text-center gap-2">
         <div class="flex w-3/4 justify-center items-center flex-wrap gap-6">
           <span  
-          v-for="c in availableSystems"
+          v-for="c in availableSystems.filter(e=>e.completed)"
           :key="c.name"
           class="text-xs font-bold tracking-[0.3em] uppercase 600/30 border-3 px-4 py-1 rounded-full" :style="{backgroundColor:c.color}">
             {{ c.name }}
@@ -145,7 +145,7 @@
     <decorativeDivisor></decorativeDivisor>
 
     <!-- ═══ CLASSES ═══ -->
-    <section class="py-24 px-6">
+    <!-- <section class="py-24 px-6">
       <div class="max-w-5xl mx-auto">
 
         <div class="text-center mb-16">
@@ -171,9 +171,10 @@
 
         <p class="text-center text-slate-600 text-xs mt-6">+ todas as outras classes do Player's Handbook</p>
       </div>
-    </section>
+    </section> -->
 
     <!-- ═══ CTA FINAL ═══ -->
+    
     <section class="py-24 px-6">
       <div class="max-w-2/3 mx-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-12 flex flex-col items-center text-center gap-6 relative overflow-hidden">

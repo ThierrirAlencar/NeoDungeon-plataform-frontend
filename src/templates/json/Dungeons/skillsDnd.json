@@ -1,30 +1,20 @@
 [
-    { "id": "acrobacia", "nome": "Acrobacia", "nomeIngles": "Acrobatics", "atributoBase": "DES" },
-    {
-        "id": "adestrar_animais",
-        "nome": "Adestrar Animais",
-        "nomeIngles": "Animal Handling",
-        "atributoBase": "SAB"
-    },
-    { "id": "arcanismo", "nome": "Arcanismo", "nomeIngles": "Arcana", "atributoBase": "INT" },
-    { "id": "atletismo", "nome": "Atletismo", "nomeIngles": "Athletics", "atributoBase": "FOR" },
-    { "id": "atuacao", "nome": "Atuação", "nomeIngles": "Performance", "atributoBase": "CAR" },
-    { "id": "enganacao", "nome": "Enganação", "nomeIngles": "Deception", "atributoBase": "CAR" },
-    { "id": "furtividade", "nome": "Furtividade", "nomeIngles": "Stealth", "atributoBase": "DES" },
-    { "id": "historia", "nome": "História", "nomeIngles": "History", "atributoBase": "INT" },
-    { "id": "intimidacao", "nome": "Intimidação", "nomeIngles": "Intimidation", "atributoBase": "CAR" },
-    { "id": "intuicao", "nome": "Intuição", "nomeIngles": "Insight", "atributoBase": "SAB" },
-    { "id": "investigacao", "nome": "Investigação", "nomeIngles": "Investigation", "atributoBase": "INT" },
-    { "id": "medicina", "nome": "Medicina", "nomeIngles": "Medicine", "atributoBase": "SAB" },
-    { "id": "natureza", "nome": "Natureza", "nomeIngles": "Nature", "atributoBase": "INT" },
-    { "id": "percepcao", "nome": "Percepção", "nomeIngles": "Perception", "atributoBase": "SAB" },
-    { "id": "persuasao", "nome": "Persuasão", "nomeIngles": "Persuasion", "atributoBase": "CAR" },
-    {
-        "id": "prestidigitacao",
-        "nome": "Prestidigitação",
-        "nomeIngles": "Sleight of Hand",
-        "atributoBase": "DES"
-    },
-    { "id": "religiao", "nome": "Religião", "nomeIngles": "Religion", "atributoBase": "INT" },
-    { "id": "sobrevivencia", "nome": "Sobrevivência", "nomeIngles": "Survival", "atributoBase": "SAB" }
+    { "id": "acrobacia", "nome": "Acrobacia", "nomeIngles": "accrobatics", "atributoBase": "DES" },
+    {"id": "adestrar_animais","nome": "Adestrar Animais","nomeIngles": "care_animals","atributoBase": "SAB"},
+    { "id": "arcanismo", "nome": "Arcanismo", "nomeIngles": "arcanism", "atributoBase": "INT" },
+    { "id": "atletismo", "nome": "Atletismo", "nomeIngles": "atletism", "atributoBase": "FOR" },
+    { "id": "atuacao", "nome": "Atuação", "nomeIngles": "acting", "atributoBase": "CAR" },
+    { "id": "enganacao", "nome": "Enganação", "nomeIngles": "deception", "atributoBase": "CAR" },
+    { "id": "furtividade", "nome": "Furtividade", "nomeIngles": "stealth", "atributoBase": "DES" },
+    { "id": "historia", "nome": "História", "nomeIngles": "history", "atributoBase": "INT" },
+    { "id": "intimidacao", "nome": "Intimidação", "nomeIngles": "intimidation", "atributoBase": "CAR" },
+    { "id": "intuicao", "nome": "Intuição", "nomeIngles": "intuition", "atributoBase": "SAB" },
+    { "id": "investigacao", "nome": "Investigação", "nomeIngles": "investigation", "atributoBase": "INT" },
+    { "id": "medicina", "nome": "Medicina", "nomeIngles": "medicine", "atributoBase": "SAB" },
+    { "id": "natureza", "nome": "Natureza", "nomeIngles": "natrue", "atributoBase": "INT" },
+    { "id": "percepcao", "nome": "Percepção", "nomeIngles": "perception", "atributoBase": "SAB" },
+    { "id": "persuasao", "nome": "Persuasão", "nomeIngles": "persuasion", "atributoBase": "CAR" },
+    {"id": "prestidigitacao","nome": "Prestidigitação","nomeIngles": "Sleight_of_hand","atributoBase": "DES"},
+    { "id": "religiao", "nome": "Religião", "nomeIngles": "religion", "atributoBase": "INT" },
+    { "id": "sobrevivencia", "nome": "Sobrevivência", "nomeIngles": "survival", "atributoBase": "SAB" }
 ]

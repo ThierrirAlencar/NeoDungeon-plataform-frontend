@@ -51,7 +51,7 @@ export function updateCharacterLocalStorageOnListValue(data:optmizedDNDTokenForm
     }
 
     const _working_list = JSON.parse(doesLocalStorageListIsOnUse) as Array<optmizedDNDTokenFormat>;
-    const _filtered_id = _working_list.findIndex(e=> e.identification.id == data.identification.id);
+    const _filtered_id = _working_list.findIndex(e=> e.identification.id == data.identification.id-1);
     _working_list[_filtered_id] == data;
 }
 
@@ -116,6 +116,40 @@ export function saveCurrentList():string{
 
     return a.href;
 }
+
+//Salva uma lista específicada em um JSON baixável
+export function saveSpecifiedList(data:Array<optmizedDNDTokenFormat>):string{
+
+    //Checka se a lista é maior que 0
+    if(data.length<=0){   
+        throw new Error("Lista enviada está vazia")
+
+    }
+
+    //Tratamento de lista
+    data.map(e=>{
+        if(!e){
+            throw new Error("Valor nulo dentro da lista");
+        }
+    })
+    
+    const _blob = new Blob([JSON.stringify(data)],{type:'application/json'});
+    const _url = URL.createObjectURL(_blob);
+
+    const a = document.createElement("a");
+    const _character_name = data[0]?.character.character_name || data[0]?.public.ownerName || data[0]?.identification.system
+    const filename = `${_character_name}-neodungeon-sheetlist-format.json`;
+    
+    a.href = _url;
+    a.download = filename
+
+    a.click() //Forçar o click
+
+    URL.revokeObjectURL(_url)
+
+    return a.href;
+}
+
 
 //Remove uma index específica da lista de personagens em Local Storage
 export function removeLocalStorageListItem(id:number){
